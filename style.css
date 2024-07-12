@@ -1,0 +1,46 @@
+/* Styles for the body */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Styles for the file upload container */
+.upload-container {
+    text-align: center;
+}
+
+/* Styles for the file upload label */
+.upload-label {
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Styles for the drop area */
+.drop-area {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    width: 300px;
+    height: 150px;
+}
+
+/* Styles for the image preview */
+.preview-image {
+    display: inline-block;
+    margin: 8px;
+    position: relative;
+}
+
+/* Styles for the delete button on each previewed image */
+.delete-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    background-color: #fff;
+    padding: 4px;
+    border: 1px solid #ccc;
+}

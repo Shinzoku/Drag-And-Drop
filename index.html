@@ -7,6 +7,19 @@
     <title>Drag & Drop</title>
 </head>
 <body>
+    <!-- Container for file upload -->
+    <div class="upload-container" id="uploadContainer">
+        <label for="fileInput" class="upload-label">
+        <input type="file" id="fileInput" multiple accept="image/*" style="display:none">
+        <div class="drop-area" id="dropArea">
+            <p>Drag & Drop images here or click to select</p>
+        </div>
+        </label>
+    
+        <!-- Container for image preview -->
+        <div class="preview-container" id="previewContainer"></div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
