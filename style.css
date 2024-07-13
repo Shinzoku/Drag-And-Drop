@@ -22,6 +22,7 @@ body {
 /* Styles for the drop area */
 .drop-area {
     border: 2px dashed #ccc;
+    border-radius: 10px 10px 10px 10px;
     padding: 20px;
     width: 300px;
     height: 150px;
@@ -29,8 +30,11 @@ body {
 
 /* Styles for the image preview */
 .preview-image {
+    border: 2px dashed #616161;
+    border-radius: 10px 10px 10px 10px;
     display: inline-block;
-    margin: 8px;
+    padding: 20px;
+    margin: 10px;
     position: relative;
 }
 

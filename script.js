@@ -67,7 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
         previewImage.classList.add('preview-image');
         previewImage.innerHTML = `
             <img src="${imageUrl}" alt="${file.name}" style="max-width: 100%; max-height: 100%;">
-            <div class="delete-button" onclick="deleteImage(this)">X</div>
+            <p>${file.name}</p>
+            <div style="margin: 4px; color: red;" class="delete-button" onclick="deleteImage(this)">X</div>
         `;
         previewContainer.appendChild(previewImage);
     }
