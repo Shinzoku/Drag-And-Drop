@@ -80,6 +80,44 @@ votre-depot/
   - GIF: `47494638`
 - Validation prevents non-image files from being uploaded by checking their signatures.
 
+## Customization
+
+You can customize this project to support additional file types, including other image formats or even non-image files like text documents. Here's how you can do it:
+
+### Adding Support for More Image Formats
+
+To add support for more image formats, you need to update the `isValidFileType` function in `script.js` to include the new file signatures and MIME types.
+
+#### Example: Adding BMP and WebP Image Support
+
+1. Add the new MIME types to the `allowedTypes` array.
+2. Add the corresponding file signatures to the `validSignatures` object.
+
+```javascript
+async function isValidFileType(file) {
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp'];
+  const validSignatures = {
+    'image/jpeg': ['ffd8ffe0', 'ffd8ffe1', 'ffd8ffe2', 'ffd8ffe3', 'ffd8ffe8'],
+    'image/png': ['89504e47'],
+    'image/gif': ['47494638'],
+    'image/bmp': ['424d'],
+    'image/webp': ['52494646']
+  };
+
+  const buffer = await file.slice(0, 4).arrayBuffer();
+  const view = new DataView(buffer);
+  const signature = view.getUint32(0, false).toString(16);
+
+  for (let type in validSignatures) {
+    if (validSignatures[type].includes(signature)) {
+      return allowedTypes.includes(type);
+    }
+  }
+
+  return false;
+}
+```
+
 ## author
 
 - **Nicolas Bernon**
