@@ -43,9 +43,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Function to handle selected files
-    function handleFiles(files) {
+    async function handleFiles(files) {
         for (const file of files) {
-            if (isValidFileType(file)) {
+            const isValid = await isValidFileType(file);
+            if (isValid) {
             const reader = new FileReader();
             reader.onload = function (e) {
                 const imageUrl = e.target.result;
@@ -59,16 +60,34 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Function to check if the file type is valid
-    function isValidFileType(file) {
+    async function isValidFileType(file) {
         // Define allowed MIME types for images
-        const allowedTypes = ['image/jpeg', 'image/png'];
-    
-        // Check if the file type is in the allowedTypes array
-        return allowedTypes.includes(file.type);
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+        // File signature
+        const validSignatures = {
+            'image/jpeg': ['ffd8ffe0', 'ffd8ffe1', 'ffd8ffe2', 'ffd8ffe3', 'ffd8ffe8'],
+            'image/png': ['89504e47'],
+            'image/gif': ['47494638']
+        };
+
+        // allows you to read the first bytes of the file
+        const buffer = await file.slice(0, 4).arrayBuffer();
+        const view = new DataView(buffer);
+        const signature = view.getUint32(0, false).toString(16);
+
+        // Check if the file type is in the allowedTypes array and reads the first bytes of the file to verify its signature
+        for (let type in validSignatures) {
+            if (validSignatures[type].includes(signature)) {
+                return allowedTypes.includes(type);
+            }
         }
+
+        return false;
+    }
     
-        // Function to create image preview and delete button
-        function createImagePreview(file, imageUrl) {
+    // Function to create image preview and delete button
+    function createImagePreview(file, imageUrl) {
         const previewImage = document.createElement('div');
         previewImage.classList.add('preview-image');
         previewImage.innerHTML = `
