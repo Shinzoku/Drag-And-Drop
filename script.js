@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
     dropArea.addEventListener('drop', handleDrop);
     fileInput.addEventListener('change', handleFileSelect);
 
+    // Initialize Sortable for the preview container
+    new Sortable(previewContainer, {
+        animation: 150,
+        ghostClass: 'sortable-ghost'
+    });
+    
     // Function to handle dragover event
     function handleDragOver(event) {
         event.preventDefault();
