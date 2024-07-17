@@ -82,7 +82,7 @@ votre-depot/
 
 ## Customization
 
-You can customize this project to support additional file types, including other image formats or even non-image files like text documents. Here's how you can do it:
+You can customize this project to support additional file types, including other image formats. Here's how you can do it:
 
 ### Adding Support for More Image Formats
 
@@ -115,6 +115,114 @@ async function isValidFileType(file) {
   }
 
   return false;
+}
+```
+
+You can customize this project to switch from handling image files to handling text files such as `.doc`, `.docx`, and `.odt`. Here's how you can do it:
+
+### Switching to Text Files
+
+To switch from handling images to handling text files, you need to update the `isValidFileType` function in `script.js` to include the new file signatures and MIME types for text files. You will also need to update the preview creation logic to handle text files.
+
+#### Example: Handling `.doc`, `.docx`, and `.odt` Files
+
+1. Update the `allowedTypes` array and `validSignatures` object to include text file types.
+2. Modify the `createFilePreview` function to display text file previews.
+
+#### Updated `script.js` (Only the functions that change)
+
+```javascript
+async function handleFiles(files) {
+    for (const file of files) {
+        const isValid = await isValidFileType(file);
+        if (isValid) {
+        createFilePreview(file);
+        } else {
+            alert('Invalid file type! Please select a valid text document.');
+        }
+    }
+}
+
+async function isValidFileType(file) {
+    const allowedTypes = ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.oasis.opendocument.text'];
+    const validSignatures = {
+        'application/msword': ['d0cf11e0'],
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['504b0304'],
+        'application/vnd.oasis.opendocument.text': ['504b0304']
+    };
+
+    const buffer = await file.slice(0, 4).arrayBuffer();
+    const view = new DataView(buffer);
+    const signature = view.getUint32(0, false).toString(16);
+
+    for (let type in validSignatures) {
+        if (validSignatures[type].includes(signature)) {
+        return allowedTypes.includes(type);
+        }
+    }
+
+    return false;
+}
+
+function createFilePreview(file) {
+    const previewFile = document.createElement('div');
+    previewFile.classList.add('preview-file');
+    previewFile.innerHTML = `
+        <div class="file-icon">${getFileIcon(file.type)}</div>
+        <div class="file-name">${file.name}</div>
+        <div class="delete-button" onclick="deleteFile(this)">X</div>
+    `;
+    previewContainer.appendChild(previewFile);
+}
+
+// Allows you to put an image depending on the text file type
+function getFileIcon(fileType) {
+    switch (fileType) {
+        case 'application/msword':
+            return '📄'; // You can replace this with an appropriate icon
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            return '📄'; // You can replace this with an appropriate icon
+        case 'application/vnd.oasis.opendocument.text':
+            return '📄'; // You can replace this with an appropriate icon
+        default:
+            return '📄'; // Default icon
+    }
+}
+```
+
+#### Updated `index.html`
+
+```html
+<input type="file" id="fileInput" multiple accept=".doc,.docx,.odt" style="display:none">
+```
+
+#### Updated `style.css`
+
+```css
+.preview-file {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.file-icon {
+    font-size: 24px;
+}
+
+.file-name {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
 }
 ```
 
