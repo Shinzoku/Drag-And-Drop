@@ -40,12 +40,14 @@ body {
 
 /* Styles for the delete button on each previewed image */
 .delete-button {
+    color: rgb(255, 0, 0);
     position: absolute;
     top: 0;
     right: 0;
     cursor: pointer;
     background-color: #fff;
     padding: 4px;
+    margin: 4px;
     border: 1px solid #ccc;
 }
 
